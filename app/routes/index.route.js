@@ -2,7 +2,7 @@ module.exports = (server) => {
     let index = require('../controllers/index.controller')
     server.route({
         method: 'GET',
-        path: '/sun',
+        path: '/',
         handler: index.render
     })
 }
