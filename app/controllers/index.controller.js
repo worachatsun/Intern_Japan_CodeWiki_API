@@ -1,3 +1,3 @@
 exports.render = (req, rep) => {
-    rep('<h2>sun</h2>')
+    rep('<h2>Code wiki</h2>')
 }
