@@ -1,0 +1,11 @@
+{
+  "name": "Intern_Japan_CodeWiki_API",
+  "version": "1.0.0",
+  "description": "API for code wiki",
+  "main": "index.js",
+  "author": "Worachat",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "^16.4.3"
+  }
+}
