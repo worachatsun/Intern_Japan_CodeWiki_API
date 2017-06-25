@@ -6,6 +6,9 @@
   "author": "Worachat",
   "license": "MIT",
   "dependencies": {
-    "hapi": "^16.4.3"
+    "dotenv": "^4.0.0",
+    "hapi": "^16.4.3",
+    "joi": "^10.6.0",
+    "mongoose": "^4.10.7"
   }
 }

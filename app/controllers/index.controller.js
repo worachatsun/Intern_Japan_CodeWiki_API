@@ -1,3 +1,8 @@
 exports.render = (req, rep) => {
-    rep('<h2>Code wiki</h2>')
+    rep({ name: req.params.name })
+}
+
+exports.saveEditorData = (req, rep) => {
+    console.log(req.payload.data)
+    rep(req.payload)
 }
