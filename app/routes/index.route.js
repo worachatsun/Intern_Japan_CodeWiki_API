@@ -1,5 +1,7 @@
+const index = require('../controllers/index.controller')
+const editor = require('../controllers/editor.controller')
+
 module.exports = (server) => {
-    let index = require('../controllers/index.controller')
 
     server.route({
         method: 'GET',
@@ -10,6 +12,6 @@ module.exports = (server) => {
     server.route({
         method: 'POST',
         path: '/api/saveEditor',
-        handler: index.saveEditorData
+        handler: editor.saveEditorData
     })
 }
