@@ -15,6 +15,6 @@ exports.saveEditorData = (req, rep) => {
 
     editor.save(function(err) {
         if (err) { rep(Boom.notFound(err)) }
-        return rep(editor)
+        return rep({editor})
     })
 }
