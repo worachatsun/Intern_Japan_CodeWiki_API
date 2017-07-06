@@ -18,3 +18,7 @@ exports.saveEditorData = (req, rep) => {
         return rep({editor})
     })
 }
+
+exports.editEditorData = (req, rep) => {
+    
+}

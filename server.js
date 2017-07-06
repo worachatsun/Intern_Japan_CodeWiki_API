@@ -1,7 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 const mongoose = require('./config/mongoose')
 const Hapi = require('./config/hapi')
-
 const db = mongoose()
 const server = Hapi()
 
