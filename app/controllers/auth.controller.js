@@ -3,6 +3,7 @@ const User = mongoose.model('User')
 const Boom = require('boom')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
+const validateSchema = require('../schemas/validate.schema')
 
 exports.login = (res, rep) => {
 
@@ -17,13 +18,7 @@ exports.register = (req, rep) => {
         admin: false
     })
 
-    const schema = Joi.object().keys({
-        username: Joi.string().alphanum().min(3).max(30).required(),
-        password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-        email: Joi.string().email()
-    })
-
-    const result = Joi.validate({username, password, email}, schema, (err, value) => {
+    const result = Joi.validate({username, password, email}, validateSchema.userSchema, (err, value) => {
         if(err) {return rep(Boom.badRequest(err))}
         bcrypt.hash(password, 10).then((hash) => {
             user.password = hash

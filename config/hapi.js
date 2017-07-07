@@ -9,7 +9,9 @@ module.exports = () => {
         port: process.env.PORT || 3000,
         routes: { cors: true }
     })
-
+    
+    require('./jwt')(server)
     require('../app/routes/index.route')(server)
+
     return server
 }
