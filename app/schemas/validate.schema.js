@@ -6,6 +6,18 @@ const userSchema = Joi.object().keys({
     email: Joi.string().email()
 })
 
+const authenticateUserSchema = Joi.alternatives().try(
+  Joi.object({
+    username: Joi.string().alphanum().min(2).max(30).required(),
+    password: Joi.string().required()
+  }),
+  Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+  })
+)
+
 module.exports = {
-    userSchema
+    userSchema,
+    authenticateUserSchema
 }

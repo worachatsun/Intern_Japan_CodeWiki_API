@@ -1,6 +1,7 @@
 const index = require('../controllers/index.controller')
 const editor = require('../controllers/editor.controller')
 const auth = require('../controllers/auth.controller')
+const validateSchema = require('../schemas/validate.schema')
 
 module.exports = (server) => {
 
@@ -18,8 +19,23 @@ module.exports = (server) => {
         {
             method: 'POST',
             path: '/auth/register',
-            config: {auth: false},
+            config: { auth: false },
             handler: auth.register
+        },
+        {
+            method: 'POST',
+            path: '/auth/login',
+            config: {
+                auth: false,
+                pre: [
+                    { method: auth.verifyCredentials, assign: 'user' }
+                ],
+                handler: auth.login,
+                validate: {
+                    payload: validateSchema.authenticateUserSchema
+                }
+            },
+            
         }
     ])
 }
