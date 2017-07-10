@@ -18,3 +18,25 @@ exports.saveEditorData = (req, rep) => {
         return rep({editor})
     })
 }
+
+exports.getEditorDataById = (req, rep) => {
+    const { _id } = req.payload
+
+    if(!_id) { return rep(Boom.notFound('Connot find id.'))}
+
+    Editor.findOne({ _id }, (err, editor) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({editor})
+    })
+}
+
+exports.updateEditorDataById = (req, rep) => {
+    const { _id, editorRaw } = req.payload
+
+    if(!_id) { return rep(Boom.notFound('Connot find id.'))}
+
+    Editor.findOneAndUpdate({_id}, {editorRaw}, (err, editor) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({editor})
+    })
+}

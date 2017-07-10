@@ -8,7 +8,14 @@ const JWT = require('jsonwebtoken')
 const env = require('dotenv').config()
 
 createJWTToken = user => {
-    return JWT.sign({user}, process.env.SECRET_KEY, { algorithm: 'HS256' } )
+    const { _id, username, admin } = user
+    let scopes
+
+    if (admin) {
+        scopes = 'admin'
+    }
+
+    return JWT.sign({ _id, username, scope: scopes}, process.env.SECRET_KEY, { algorithm: 'HS256' } )
 }
 
 exports.login = (req, rep) => {
@@ -47,10 +54,10 @@ exports.verifyUniqueUser = (req, rep) => {
     }, (err, user) => {
         if (user) {
             if (user.username === username) {
-                return rep(Boom.badRequest('Username taken'));
+                return rep(Boom.badRequest('Username taken'))
             }
             if (user.email === email) {
-                return rep(Boom.badRequest('Email taken'));
+                return rep(Boom.badRequest('Email taken'))
             }
         }
 
