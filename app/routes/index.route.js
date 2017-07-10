@@ -81,6 +81,14 @@ module.exports = (server) => {
                 auth: false,
                 handler: editor.addCommentById
             }
+        },
+        {
+            method: 'POST',
+            path: '/api/searchTopic',
+            config: {
+                auth: false,
+                handler: editor.searchTopicByTagAndTitle
+            }
         }
     ])
 }

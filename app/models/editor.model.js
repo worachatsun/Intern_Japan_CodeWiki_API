@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 let EditorSchema = new Schema({
     editorRaw: Object,
     title: {type: String, required: true},
-    tag: [String],
+    tags: [String],
     ownerId: {type: String, required: true},
     comment: [{
         text: String,
