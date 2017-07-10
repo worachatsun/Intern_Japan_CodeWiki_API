@@ -39,7 +39,7 @@ exports.updateEditorDataById = (req, rep) => {
 
     if(!_id) { return rep(Boom.notFound('Connot find id.'))}
 
-    Editor.findOneAndUpdate({_id}, {editorRaw, title, tag}, {new: true}, (err, editor) => {
+    Editor.findOneAndUpdate({_id}, {editorRaw, title, tag, updatedAt: new Date() }, {new: true}, (err, editor) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({editor})
     })
@@ -64,7 +64,7 @@ exports.searchTopicByTagAndTitle = (req, rep) => {
 
     Editor.find({
         $or: [
-            { title: searchText },
+            { title: { "$regex": searchText, "$options": "i" } },
             { tags: { $in: [searchText] } }
         ]
     }, (err, topic) => {
