@@ -20,3 +20,19 @@ exports.getUserData = (req, rep) => {
         return rep(Boom.badRequest('Server Error or Unauthorized'))
     }
 }
+
+exports.updateUserData = (req, rep) => {
+    const { _id, name, bio, url, company } = req.payload
+
+    const updateData = {
+        name,
+        bio,
+        url,
+        company
+    }
+
+    User.findByIdAndUpdate(_id, updateData, {new: true}, (err, user) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({user})
+    })
+}

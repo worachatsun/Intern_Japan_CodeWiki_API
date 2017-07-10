@@ -87,3 +87,28 @@ exports.verifyCredentials = (req, rep) => {
             return rep(Boom.badRequest('Incorrect username or email'))
     })
 }
+
+exports.forgetPassword = (req, rep) => {
+
+}
+
+exports.changePassword = (req, rep) => {
+    const { _id, oldPassword, newPassword } = req.payload
+
+    User.findById(_id, (err, user) => {
+        if(err) { return rep(Boom.badRequest(err)) }
+        if(user) {
+            bcrypt.compare(oldPassword, user.password, (err, isValid) => {
+                if(isValid) {
+                    bcrypt.hash(newPassword, 10).then(hash => {
+                        User.findByIdAndUpdate(_id, {password: hash}, {new: true}, (err, user) => {
+                            return rep({user})
+                        })
+                    })
+                } else {
+                    return rep(Boom.badRequest('Incorrect password'))
+                }
+            })
+        }
+    })
+}
