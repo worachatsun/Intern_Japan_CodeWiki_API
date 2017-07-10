@@ -58,3 +58,17 @@ exports.addCommentById = (req, rep) => {
         return rep({editor})
     })
 }
+
+exports.searchTopicByTagAndTitle = (req, rep) => {
+    const { searchText } = req.payload
+
+    Editor.find({
+        $or: [
+            { title: searchText },
+            { tags: { $in: [searchText] } }
+        ]
+    }, (err, topic) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({topic})
+    })
+}
