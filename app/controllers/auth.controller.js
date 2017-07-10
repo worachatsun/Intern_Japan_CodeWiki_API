@@ -23,15 +23,16 @@ exports.login = (req, rep) => {
 }
 
 exports.register = (req, rep) => {
-    const { username, password, email } = req.payload 
+    const { username, password, email, name } = req.payload 
 
     const user = new User({
         username,
+        name,
         email,
         admin: false
     })
 
-    const result = Joi.validate({username, password, email}, validateSchema.userSchema, (err, value) => {
+    const result = Joi.validate({username, password, email, name}, validateSchema.userSchema, (err, value) => {
         if(err) {return rep(Boom.badRequest(err))}
         bcrypt.hash(password, 10).then((hash) => {
             user.password = hash

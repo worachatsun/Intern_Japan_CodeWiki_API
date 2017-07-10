@@ -16,7 +16,7 @@ module.exports = server => {
         if(err) { console.log(err) }
 
         server.auth.strategy('jwt', 'jwt', {
-            key: process.env.SECRET_KEY || 'secretkey',
+            key: process.env.SECRET_KEY,
             validateFunc: validate,
             ververifyOptions: { algorithms: [ 'HS256' ] }
         })
