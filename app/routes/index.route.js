@@ -1,6 +1,7 @@
 const index = require('../controllers/index.controller')
 const editor = require('../controllers/editor.controller')
 const auth = require('../controllers/auth.controller')
+const user = require('../controllers/user.controller')
 const validateSchema = require('../schemas/validate.schema')
 
 module.exports = (server) => {
@@ -13,13 +14,13 @@ module.exports = (server) => {
         },
         {
             method: 'POST',
-            path: '/api/saveEditor',
-            handler: editor.saveEditorData
-        },
-        {
-            method: 'POST',
             path: '/auth/register',
-            config: { auth: false },
+            config: { 
+                auth: false,
+                validate: {
+                    payload: validateSchema.userSchema
+                }
+            },
             handler: auth.register
         },
         {
@@ -34,8 +35,48 @@ module.exports = (server) => {
                 validate: {
                     payload: validateSchema.authenticateUserSchema
                 }
-            },
-            
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/userData',
+            config: {
+                auth: false,
+                handler: user.getUserData,
+                validate: {
+                    payload: validateSchema.getDataFromId
+                }
+            }
+        }
+    ])
+
+    server.route([
+        {
+            method: 'POST',
+            path: '/api/getEditorData',
+            config: {
+                auth: false,
+                handler: editor.getEditorDataById,
+                validate: {
+                    payload: validateSchema.getDataFromId
+                }
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/saveEditor',
+            config: {
+                auth: false
+            },      
+            handler: editor.saveEditorData
+        },
+        {
+            method: 'POST',
+            path: '/api/updateEditorData',
+            config: {
+                auth: false,
+                handler: editor.updateEditorDataById
+            }
         }
     ])
 }

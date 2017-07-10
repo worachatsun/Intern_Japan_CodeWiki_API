@@ -2,9 +2,7 @@ const env = require('dotenv').config()
 const User = require('mongoose').model('User')
 
 const validate = (decoded, request, callback) => {
-    console.log(decoded.user, 'decoded')
-    User.findById(decoded.user._id, (err, user) => {
-        console.log(user)
+    User.findById(decoded._id, (err, user) => {
         if(err) { return callback(null, false) }
         if(user) 
             return callback(null, true)

@@ -17,7 +17,12 @@ const authenticateUserSchema = Joi.alternatives().try(
   })
 )
 
+const getDataFromId = Joi.object().keys({
+    _id: Joi.string().required()
+})
+
 module.exports = {
     userSchema,
-    authenticateUserSchema
+    authenticateUserSchema,
+    getDataFromId
 }
