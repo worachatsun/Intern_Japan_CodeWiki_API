@@ -1,13 +1,22 @@
 const Boom = require('boom')
 const User = require('mongoose').model('User')
+const jwt = require('jsonwebtoken')
+const env = require('dotenv').config()
 
 exports.getUserData = (req, rep) => {
-    const { _id } = req.payload
+    if(req.headers.authorization){
+        const authorization = req.headers.authorization
+        try {
+            decoded = jwt.verify(authorization, process.env.SECRET_KEY)
+        } catch (e) {
+            return rep(Boom.proxyAuthRequired('Unauthorized'))
+        }
 
-    if(!_id) { return rep(Boom.notFound('Connot find id.'))}
-
-    User.findOne({ _id }, (err, user) => {
-        if(err) { return rep(Boom.notFound(err)) }
-        return rep({user})
-    })
+        User.findOne({ _id: decoded._id }, (err, user) => {
+            if(err) { return rep(Boom.notFound(err)) }
+            return rep({user})
+        })
+    }else{
+        return rep(Boom.badRequest('Server Error or Unauthorized'))
+    }
 }

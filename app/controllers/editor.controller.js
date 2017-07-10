@@ -3,14 +3,18 @@ const Editor = mongoose.model('Editor')
 const Boom = require('boom')
 
 exports.saveEditorData = (req, rep) => {
-    const { editorRaw } = req.payload
+    const { editorRaw, title, tag, ownerId, comment } = req.payload
 
-    if (!editorRaw ) {
+    if (!editorRaw || !title ) {
         return rep(Boom.notFound('Connot find raw data of editor.'))
     }
     
     const editor = new Editor({
-        editorRaw
+        editorRaw,
+        title,
+        tag,
+        ownerId,
+        comment
     })
 
     editor.save(function(err) {
@@ -31,11 +35,25 @@ exports.getEditorDataById = (req, rep) => {
 }
 
 exports.updateEditorDataById = (req, rep) => {
-    const { _id, editorRaw } = req.payload
+    const { _id, editorRaw, title, tag } = req.payload
 
     if(!_id) { return rep(Boom.notFound('Connot find id.'))}
 
-    Editor.findOneAndUpdate({_id}, {editorRaw}, (err, editor) => {
+    Editor.findOneAndUpdate({_id}, {editorRaw, title, tag}, {new: true}, (err, editor) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({editor})
+    })
+}
+
+exports.addCommentById = (req, rep) => {
+    const { _id, text, commentOwner } = req.payload
+
+    const updateData = {
+        text,
+        commentOwner
+    }
+
+    Editor.findByIdAndUpdate(_id, {$push: {comment: updateData}}, {new: true}, (err, editor) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({editor})
     })

@@ -41,11 +41,7 @@ module.exports = (server) => {
             method: 'POST',
             path: '/api/userData',
             config: {
-                auth: false,
                 handler: user.getUserData,
-                validate: {
-                    payload: validateSchema.getDataFromId
-                }
             }
         }
     ])
@@ -76,6 +72,14 @@ module.exports = (server) => {
             config: {
                 auth: false,
                 handler: editor.updateEditorDataById
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/addComment',
+            config: {
+                auth: false,
+                handler: editor.addCommentById
             }
         }
     ])
