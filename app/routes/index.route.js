@@ -19,9 +19,9 @@ module.exports = (server) => {
                 auth: false,
                 validate: {
                     payload: validateSchema.userSchema
-                }
-            },
-            handler: auth.register
+                },
+                handler: auth.register
+            }
         },
         {
             method: 'POST',
@@ -42,6 +42,13 @@ module.exports = (server) => {
             path: '/api/userData',
             config: {
                 handler: user.getUserData,
+            }
+        },
+        {
+            method: 'POST',
+            path: '/auth/changePassword',
+            config: {
+                handler: auth.changePassword,
             }
         }
     ])
