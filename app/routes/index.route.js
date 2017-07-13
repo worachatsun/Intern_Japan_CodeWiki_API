@@ -69,9 +69,9 @@ module.exports = (server) => {
             method: 'POST',
             path: '/api/saveEditor',
             config: {
-                auth: false
-            },      
-            handler: editor.saveEditorData
+                auth: false,
+                handler: editor.saveEditorData
+            }
         },
         {
             method: 'POST',
@@ -95,6 +95,14 @@ module.exports = (server) => {
             config: {
                 auth: false,
                 handler: editor.searchTopicByTagAndTitle
+            }
+        },
+        {
+            method: 'GET',
+            path: '/api/getAllTopic',
+            config: {
+                auth: false,
+                handler: editor.getAllEditorTopic
             }
         }
     ])
