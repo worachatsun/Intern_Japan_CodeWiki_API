@@ -19,7 +19,9 @@ createJWTToken = user => {
 }
 
 exports.login = (req, rep) => {
-    return rep({ token: createJWTToken(req.pre.user) }).code(201)
+    const dataCreateToken = Object.assign({}, req.pre.user)
+    delete dataCreateToken._doc.password
+    return rep({ token: createJWTToken(dataCreateToken._doc), user: dataCreateToken._doc }).code(201)
 }
 
 exports.register = (req, rep) => {
