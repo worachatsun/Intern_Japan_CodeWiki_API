@@ -69,7 +69,6 @@ module.exports = (server) => {
             method: 'POST',
             path: '/api/saveEditor',
             config: {
-                auth: false,
                 handler: editor.saveEditorData
             }
         },
@@ -95,6 +94,14 @@ module.exports = (server) => {
             config: {
                 auth: false,
                 handler: editor.searchTopicByTagAndTitle
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/searchMyTopic',
+            config: {
+                auth: false,
+                handler: editor.searchMyTopic
             }
         },
         {

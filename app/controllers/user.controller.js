@@ -14,7 +14,9 @@ exports.getUserData = (req, rep) => {
 
         User.findOne({ _id: decoded._id }, (err, user) => {
             if(err) { return rep(Boom.notFound(err)) }
-            return rep({user})
+            const dataCreateToken = Object.assign({}, user)
+            delete dataCreateToken._doc.password
+            return rep({user: dataCreateToken._doc})
         })
     }else{
         return rep(Boom.badRequest('Server Error or Unauthorized'))

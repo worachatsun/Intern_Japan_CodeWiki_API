@@ -39,7 +39,9 @@ exports.register = (req, rep) => {
             user.password = hash
             user.save((err, user) => {
                 if(err) { return rep(Boom.badRequest(err)) }
-                return rep({ token: createJWTToken(user) }).code(201)
+                const dataCreateToken = Object.assign({}, user)
+                delete dataCreateToken._doc.password
+                return rep({ token: createJWTToken(dataCreateToken._doc), user: dataCreateToken._doc }).code(201)
             })
         })
     })
