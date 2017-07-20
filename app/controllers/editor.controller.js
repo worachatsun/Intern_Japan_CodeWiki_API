@@ -44,11 +44,11 @@ exports.getAllEditorTopic = (req, rep) => {
 }
 
 exports.updateEditorDataById = (req, rep) => {
-    const { _id, editorRaw, title, tag } = req.payload
+    const { _id, editorRaw, title, tags } = req.payload
 
     if(!_id) { return rep(Boom.notFound('Connot find id.'))}
 
-    Editor.findOneAndUpdate({_id}, {editorRaw, title, tag, updatedAt: new Date() }, {new: true}, (err, editor) => {
+    Editor.findOneAndUpdate({_id}, {editorRaw, title, tags, updatedAt: new Date() }, {new: true}, (err, editor) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({editor})
     })
@@ -85,7 +85,7 @@ exports.searchTopicByTagAndTitle = (req, rep) => {
 exports.searchMyTopic = (req, rep) => {
     const { id } = req.payload
 
-    Editor.find({ 'owner.ownerId': id }, (err, topics) => {
+    Editor.find({ 'owner.ownerId': id }, {title: true, owner: true, updatedAt: true, createdAt: true, tags: true}, (err, topics) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({topics})
     })
