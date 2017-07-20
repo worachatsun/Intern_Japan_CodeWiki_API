@@ -3,7 +3,7 @@ const Editor = mongoose.model('Editor')
 const Boom = require('boom')
 
 exports.saveEditorData = (req, rep) => {
-    const { editorRaw, title, tags, ownerId } = req.payload
+    const { editorRaw, title, tags, ownerId, ownerName } = req.payload
 
     if (!editorRaw || !title ) {
         return rep(Boom.notFound('Connot find raw data of editor.'))
@@ -13,7 +13,10 @@ exports.saveEditorData = (req, rep) => {
         editorRaw,
         title,
         tags,
-        ownerId
+        owner: {
+            ownerId,
+            ownerName
+        }
     })
 
     editor.save(function(err) {
@@ -34,18 +37,18 @@ exports.getEditorDataById = (req, rep) => {
 }
 
 exports.getAllEditorTopic = (req, rep) => {
-    Editor.find({}, {title: true, ownerId: true, updatedAt: true, createdAt: true, tags: true}, (err, editor) => {
+    Editor.find({}, {title: true, owner: true, updatedAt: true, createdAt: true, tags: true}, (err, editor) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({editor})
     })
 }
 
 exports.updateEditorDataById = (req, rep) => {
-    const { _id, editorRaw, title, tag } = req.payload
+    const { _id, editorRaw, title, tags } = req.payload
 
     if(!_id) { return rep(Boom.notFound('Connot find id.'))}
 
-    Editor.findOneAndUpdate({_id}, {editorRaw, title, tag, updatedAt: new Date() }, {new: true}, (err, editor) => {
+    Editor.findOneAndUpdate({_id}, {editorRaw, title, tags, updatedAt: new Date() }, {new: true}, (err, editor) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({editor})
     })
@@ -76,5 +79,14 @@ exports.searchTopicByTagAndTitle = (req, rep) => {
     }, (err, topic) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({topic})
+    })
+}
+
+exports.searchMyTopic = (req, rep) => {
+    const { id } = req.payload
+
+    Editor.find({ 'owner.ownerId': id }, {title: true, owner: true, updatedAt: true, createdAt: true, tags: true}, (err, topics) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({topics})
     })
 }

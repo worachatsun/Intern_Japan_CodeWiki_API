@@ -5,7 +5,10 @@ let EditorSchema = new Schema({
     editorRaw: Object,
     title: {type: String, required: true},
     tags: [String],
-    ownerId: {type: String, required: true},
+    owner: {
+        ownerId: {type: String, required: true},
+        ownerName: {type: String, required: true}
+    },
     comment: [{
         text: String,
         commentOwner: String
