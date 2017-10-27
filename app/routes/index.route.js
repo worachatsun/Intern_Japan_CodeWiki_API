@@ -1,5 +1,5 @@
 const index = require('../controllers/index.controller')
-const editor = require('../controllers/editor.controller')
+const appMaker = require('../controllers/make.app.controller')
 const auth = require('../controllers/auth.controller')
 const user = require('../controllers/user.controller')
 const validateSchema = require('../schemas/validate.schema')
@@ -10,6 +10,9 @@ module.exports = (server) => {
         {
             method: 'GET',
             path: '/{name}',
+            config: {
+                auth: false
+            },
             handler: index.render
         },
         {
@@ -50,66 +53,74 @@ module.exports = (server) => {
             config: {
                 handler: auth.changePassword,
             }
+        },
+        {
+            method: 'POST',
+            path: '/api/displayUpload',
+            config: {
+                auth: false,
+                handler: user.displayUploadData,
+                cors: {
+                    origin: ['*'],
+                    additionalHeaders: ['cache-control', 'x-requested-with']
+                }
+            }
         }
     ])
 
     server.route([
         {
             method: 'POST',
-            path: '/api/getEditorData',
+            path: '/api/saveAppInfo',
             config: {
-                auth: false,
-                handler: editor.getEditorDataById,
+                handler: appMaker.saveAppInfo,
                 validate: {
-                    payload: validateSchema.getDataFromId
+                    payload: validateSchema.appMakerSchema
                 }
             }
         },
         {
             method: 'POST',
-            path: '/api/saveEditor',
+            path: '/api/getAppByUser',
             config: {
-                handler: editor.saveEditorData
+                handler: appMaker.searchAppByUserId
             }
         },
         {
-            method: 'POST',
-            path: '/api/updateEditorData',
+            method: 'PUT',
+            path: '/auth/updateUserData',
             config: {
-                auth: false,
-                handler: editor.updateEditorDataById
-            }
-        },
-        {
-            method: 'POST',
-            path: '/api/addComment',
-            config: {
-                auth: false,
-                handler: editor.addCommentById
-            }
-        },
-        {
-            method: 'POST',
-            path: '/api/searchTopic',
-            config: {
-                auth: false,
-                handler: editor.searchTopicByTagAndTitle
-            }
-        },
-        {
-            method: 'POST',
-            path: '/api/searchMyTopic',
-            config: {
-                auth: false,
-                handler: editor.searchMyTopic
+                handler: user.updateUserData
             }
         },
         {
             method: 'GET',
-            path: '/api/getAllTopic',
+            path: '/api/downloadAndroid/{id}',
             config: {
                 auth: false,
-                handler: editor.getAllEditorTopic
+                handler: appMaker.downloadAndroid
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/updateAppData',
+            config: {
+                handler: appMaker.updateAppData
+            }
+        },
+        {
+            method: 'POST',
+            path: '/api/deleteApp',
+            config: {
+                handler: appMaker.deleteApp
+            }
+        },
+        {
+            method: 'GET',
+            path: '/api/searchAppById/{id}',
+            config: {
+                auth: false,
+                handler: appMaker.searchAppById
             }
         }
     ])

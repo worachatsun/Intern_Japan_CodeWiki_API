@@ -1,7 +1,7 @@
 {
-  "name": "Intern_Japan_CodeWiki_API",
+  "name": "manage_API",
   "version": "1.0.0",
-  "description": "API for code wiki",
+  "description": "API for manage creater",
   "main": "index.js",
   "author": "Worachat",
   "license": "MIT",
@@ -11,8 +11,10 @@
     "global": "^4.3.2",
     "hapi": "^16.4.3",
     "hapi-auth-jwt2": "^7.3.0",
+    "inert": "^4.2.1",
     "joi": "^10.6.0",
-    "mongoose": "^4.10.7"
+    "mongoose": "^4.10.7",
+    "shelljs": "^0.7.8"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

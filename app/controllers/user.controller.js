@@ -38,3 +38,27 @@ exports.updateUserData = (req, rep) => {
         return rep({user})
     })
 }
+
+exports.displayUploadData = (req, rep) => {
+    return rep(req.payload)
+}
+
+exports.updateUserData = (req, rep) => {
+    const { _id, tel, avatar, email, firstname, lastname, location, university } = req.payload
+
+    const updateData = {
+        _id, 
+        tel, 
+        avatar, 
+        email, 
+        firstname, 
+        lastname, 
+        location, 
+        university
+    }
+    
+    User.findByIdAndUpdate(_id, updateData, {new: true}, (err, user) => {
+        if(err) { return rep(Boom.notFound(err)) }
+        return rep({user})
+    })
+}

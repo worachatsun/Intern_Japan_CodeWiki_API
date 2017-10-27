@@ -6,7 +6,7 @@ module.exports = function() {
     const db = mongoose.connect(config.mongoUri)
 
     require('../app/models/user.model')
-    require('../app/models/editor.model')
+    require('../app/models/make.app.model')
     
     return db
 }
