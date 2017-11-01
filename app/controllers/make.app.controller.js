@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const AppMaker = mongoose.model('AppMaker')
 const Boom = require('boom')
 const shell = require('shelljs')
+const PythonShell = require('python-shell')
 
 exports.saveAppInfo = (req, rep) => {
     const { uni_name, uni_abb, uni_th_name, uni_th_abb, color, logo, createdBy } = req.payload
@@ -12,7 +13,7 @@ exports.saveAppInfo = (req, rep) => {
 
     const { stdout, stderr, code } = shell.exec(`bash ${__dirname+'/../../gen-android.sh'}`,{silent:true, async:false})
     const stdoutArr = stdout.split('\n')
-    
+    console.log(stderr)
     const appMaker = new AppMaker({
         uni_name,
         uni_abb,
@@ -47,6 +48,10 @@ exports.searchAppByUserId = (req, rep) => {
 
 exports.downloadAndroid = (req, rep) => {
     return rep.file(`${__dirname}/../android_app/${req.params.id}.apk`, {filename: `${req.params.id}.apk`, mode: 'attachment', lookupCompressed: true})
+}
+
+exports.downloadIOS = (req, rep) => {
+    return rep.file(`${__dirname}/../ios_app/${req.params.id}.zip`, {filename: `${req.params.id}.zip`, mode: 'attachment', lookupCompressed: true})
 }
 
 exports.updateAppData = (req, rep) => {
@@ -85,4 +90,30 @@ exports.searchAppById = (req, rep) => {
         if(err) { return rep(Boom.notFound(err)) }
         return rep({apps})
     })
+}
+
+exports.testPython = (req, rep) => {
+    var pyshell = new PythonShell('swarm-script.py', { scriptPath: `${__dirname}/../../swarm-script/`} )
+    pyshell.send('sun')
+    
+    pyshell.on('message', function (message) {
+        // received a message sent from the Python script (a simple "print" statement)
+        console.log(message);
+    })
+
+    // PythonShell.run('swarm-script.py', { scriptPath: `${__dirname}/../../swarm-script/`}, function (err, results) {
+    //     if (err) throw err;
+    //     // results is an array consisting of messages collected during execution
+    //     console.log('results: %j', results);
+    // })
+
+    pyshell.end(function (err) {
+        if (err){
+            throw err;
+        };
+    
+        console.log('finished');
+    })
+
+    //pyshell.send(JSON.stringify([1,2,3,4,5]))
 }

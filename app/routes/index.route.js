@@ -102,6 +102,14 @@ module.exports = (server) => {
             }
         },
         {
+            method: 'GET',
+            path: '/api/downloadIOS/{id}',
+            config: {
+                auth: false,
+                handler: appMaker.downloadIOS
+            }
+        },
+        {
             method: 'POST',
             path: '/api/updateAppData',
             config: {
@@ -121,6 +129,14 @@ module.exports = (server) => {
             config: {
                 auth: false,
                 handler: appMaker.searchAppById
+            }
+        },
+        {
+            method: 'GET',
+            path: '/api/testPython',
+            config: {
+                auth: false,
+                handler: appMaker.testPython
             }
         }
     ])
