@@ -15,3 +15,5 @@
 2. Node.js
 
 3. Mongo DB
+
+* You need to run both of Front-end and Back-end as the same time. (https://github.com/worachatsun/Intern_Japan_CodeWiki)
