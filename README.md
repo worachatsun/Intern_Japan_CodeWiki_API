@@ -17,3 +17,12 @@
 3. Mongo DB
 
 * You need to run both of Front-end and Back-end as the same time. (https://github.com/worachatsun/Intern_Japan_CodeWiki)
+
+# Libraries
+
+1. "bcrypt"
+2. "dotenv"
+3. "hapi"
+4. "hapi-auth-jwt2"
+5. "joi"
+6. "mongoose"
